@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "setup": "tsx scripts/setup-kontent.ts"
+    "setup": "tsx scripts/setup-kontent.ts",
+    "organize": "tsx scripts/organize-content.ts"
   },
   "dependencies": {
     "@kontent-ai/delivery-sdk": "^16.4.1",
