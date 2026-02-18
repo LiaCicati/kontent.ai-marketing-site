@@ -66,6 +66,17 @@ const client = createManagementClient({
 async function main() {
   console.log(`\nConfiguring preview URLs for: ${baseUrl}\n`);
 
+  // Check if a "web" space exists for Web Spotlight
+  const spaces = await client.listSpaces().toPromise();
+  const webSpace = spaces.rawData.find(
+    (s: { codename: string }) => s.codename === "web"
+  );
+
+  // Space domains for Web Spotlight iframe
+  const space_domains = webSpace
+    ? [{ space: { codename: "web" as const }, domain: baseUrl }]
+    : [];
+
   // Preview URL patterns for each content type that has its own route
   const preview_url_patterns = [
     {
@@ -94,7 +105,7 @@ async function main() {
     await client
       .modifyPreviewConfiguration()
       .withData({
-        space_domains: [],
+        space_domains,
         preview_url_patterns,
       })
       .toPromise();

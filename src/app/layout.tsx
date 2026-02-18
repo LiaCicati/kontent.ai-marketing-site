@@ -46,6 +46,13 @@ export default async function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} antialiased min-h-screen flex flex-col`}
+        {...(draft.isEnabled
+          ? {
+              "data-kontent-environment-id":
+                process.env.KONTENT_PROJECT_ID,
+              "data-kontent-language-codename": "default",
+            }
+          : {})}
       >
         {draft.isEnabled && <DraftModeBanner />}
         {draft.isEnabled && <SmartLinkProvider />}
