@@ -574,75 +574,75 @@ async function main() {
   // ── Step 2: Create Content Items ─────────────────────────────────
   console.log("Step 2: Creating content items...\n");
 
-  // Navigation items
+  // Navigation links
   const navItemNames = [
-    ["Home", "nav_home"],
-    ["Services", "nav_services"],
-    ["About", "nav_about"],
-    ["Contact", "nav_contact"],
-    ["Blog", "nav_blog"],
+    ["Home Link", "nav_home"],
+    ["Services Link", "nav_services"],
+    ["About Link", "nav_about"],
+    ["Contact Link", "nav_contact"],
+    ["Blog Link", "nav_blog"],
   ];
   for (const [name, codename] of navItemNames) {
     await addItem(name, codename, "navigation_item");
   }
 
   // Footer columns
-  await addItem("Company", "footer_col_company", "footer_column");
-  await addItem("Resources", "footer_col_resources", "footer_column");
+  await addItem("Company Column", "footer_col_company", "footer_column");
+  await addItem("Resources Column", "footer_col_resources", "footer_column");
 
   // Footer
-  await addItem("Site Footer", "site_footer", "footer");
+  await addItem("Footer", "site_footer", "footer");
 
-  // Site config
-  await addItem("Site Config", "site_config_item", "site_config");
+  // Site settings
+  await addItem("Site Settings", "site_config_item", "site_config");
 
-  // ─── Home page components ────────────────────────────────────────
-  await addItem("Home Hero", "home_hero", "hero");
-  await addItem("Home Logo Cloud", "home_logo_cloud", "logo_cloud");
-  await addItem("Feature: Lightning Fast", "feature_speed", "feature_card");
-  await addItem("Feature: Enterprise Security", "feature_secure", "feature_card");
-  await addItem("Feature: Infinite Scale", "feature_scale", "feature_card");
-  await addItem("Home Feature Grid", "home_feature_grid", "feature_grid");
-  await addItem("Home Text With Image", "home_text_image", "text_with_image");
-  await addItem("Testimonial: Sarah Chen", "testimonial_sarah", "testimonial_card");
-  await addItem("Testimonial: James Wilson", "testimonial_james", "testimonial_card");
-  await addItem("Home Testimonials", "home_testimonials", "testimonials");
-  await addItem("Home CTA", "home_cta", "call_to_action");
-  await addItem("Home", "page_home", "page");
+  // ─── Home page sections ───────────────────────────────────────────
+  await addItem("Hero Banner", "home_hero", "hero");
+  await addItem("Trusted By \u2014 Logos", "home_logo_cloud", "logo_cloud");
+  await addItem("Lightning Fast", "feature_speed", "feature_card");
+  await addItem("Enterprise Security", "feature_secure", "feature_card");
+  await addItem("Infinite Scale", "feature_scale", "feature_card");
+  await addItem("Why Choose Us", "home_feature_grid", "feature_grid");
+  await addItem("Our Mission", "home_text_image", "text_with_image");
+  await addItem("Sarah Chen \u2014 Testimonial", "testimonial_sarah", "testimonial_card");
+  await addItem("James Wilson \u2014 Testimonial", "testimonial_james", "testimonial_card");
+  await addItem("Client Testimonials", "home_testimonials", "testimonials");
+  await addItem("Ready to Get Started?", "home_cta", "call_to_action");
+  await addItem("Home Page", "page_home", "page");
 
-  // ─── Services page components ────────────────────────────────────
-  await addItem("Services Hero", "services_hero", "hero");
-  await addItem("Service: Web Development", "service_web", "feature_card");
-  await addItem("Service: Mobile Development", "service_mobile", "feature_card");
-  await addItem("Service: Cloud Solutions", "service_cloud", "feature_card");
-  await addItem("Services Feature Grid", "services_feature_grid", "feature_grid");
-  await addItem("Pricing: Starter", "pricing_starter", "pricing_card");
-  await addItem("Pricing: Professional", "pricing_pro", "pricing_card");
-  await addItem("Pricing: Enterprise", "pricing_enterprise", "pricing_card");
-  await addItem("Services Pricing Table", "services_pricing", "pricing_table");
-  await addItem("Services CTA", "services_cta", "call_to_action");
-  await addItem("Services", "page_services", "page");
+  // ─── Services page sections ───────────────────────────────────────
+  await addItem("Hero Banner", "services_hero", "hero");
+  await addItem("Web Development", "service_web", "feature_card");
+  await addItem("Mobile Development", "service_mobile", "feature_card");
+  await addItem("Cloud Solutions", "service_cloud", "feature_card");
+  await addItem("What We Offer", "services_feature_grid", "feature_grid");
+  await addItem("Starter Plan", "pricing_starter", "pricing_card");
+  await addItem("Professional Plan", "pricing_pro", "pricing_card");
+  await addItem("Enterprise Plan", "pricing_enterprise", "pricing_card");
+  await addItem("Pricing", "services_pricing", "pricing_table");
+  await addItem("Need a Custom Solution?", "services_cta", "call_to_action");
+  await addItem("Services Page", "page_services", "page");
 
-  // ─── About page components ──────────────────────────────────────
-  await addItem("About Hero", "about_hero", "hero");
-  await addItem("About Text With Image", "about_text_image", "text_with_image");
-  await addItem("Value: Innovation First", "value_innovation", "feature_card");
-  await addItem("Value: Quality Obsessed", "value_quality", "feature_card");
-  await addItem("Value: Customer Focused", "value_customer", "feature_card");
-  await addItem("About Values Grid", "about_values_grid", "feature_grid");
-  await addItem("Testimonial: Maria Garcia", "testimonial_maria", "testimonial_card");
-  await addItem("Testimonial: Alex Thompson", "testimonial_alex", "testimonial_card");
-  await addItem("About Testimonials", "about_testimonials", "testimonials");
-  await addItem("About", "page_about", "page");
+  // ─── About page sections ─────────────────────────────────────────
+  await addItem("Hero Banner", "about_hero", "hero");
+  await addItem("Our Story", "about_text_image", "text_with_image");
+  await addItem("Innovation First", "value_innovation", "feature_card");
+  await addItem("Quality Obsessed", "value_quality", "feature_card");
+  await addItem("Customer Focused", "value_customer", "feature_card");
+  await addItem("Our Values", "about_values_grid", "feature_grid");
+  await addItem("Maria Garcia \u2014 Testimonial", "testimonial_maria", "testimonial_card");
+  await addItem("Alex Thompson \u2014 Testimonial", "testimonial_alex", "testimonial_card");
+  await addItem("Client Testimonials", "about_testimonials", "testimonials");
+  await addItem("About Page", "page_about", "page");
 
-  // ─── Contact page components ─────────────────────────────────────
-  await addItem("Contact Hero", "contact_hero", "hero");
-  await addItem("Contact Form", "contact_form_item", "contact_form");
-  await addItem("FAQ: Response Time", "faq_response", "faq_item");
-  await addItem("FAQ: Free Consultation", "faq_consultation", "faq_item");
-  await addItem("FAQ: Project Timeline", "faq_timeline", "faq_item");
-  await addItem("Contact FAQ", "contact_faq", "faq");
-  await addItem("Contact", "page_contact", "page");
+  // ─── Contact page sections ────────────────────────────────────────
+  await addItem("Hero Banner", "contact_hero", "hero");
+  await addItem("Get In Touch Form", "contact_form_item", "contact_form");
+  await addItem("What is your typical response time?", "faq_response", "faq_item");
+  await addItem("Do you offer free consultations?", "faq_consultation", "faq_item");
+  await addItem("What is the typical project timeline?", "faq_timeline", "faq_item");
+  await addItem("Frequently Asked Questions", "contact_faq", "faq");
+  await addItem("Contact Page", "page_contact", "page");
 
   // ─── Blog posts ──────────────────────────────────────────────────
   await addItem("The Future of Web Development", "blog_future_web", "blog_post");

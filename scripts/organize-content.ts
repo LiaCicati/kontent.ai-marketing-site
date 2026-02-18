@@ -1,11 +1,14 @@
 /**
- * Organize Kontent.ai content into collections for easy searching and management.
+ * Organize Kontent.ai content into collections and apply editor-friendly names.
  *
- * Collections created:
- *   - Global         → site config, navigation items, footer
- *   - Pages          → all Page content items
- *   - Blog           → all blog post items
- *   - Components     → reusable section blocks (heroes, feature grids, CTAs, etc.)
+ * Collections:
+ *   - Global   → site settings, navigation links, footer
+ *   - Pages    → all Page content items
+ *   - Blog     → all blog post items
+ *   - Home     → sections for the Home page
+ *   - Services → sections for the Services page
+ *   - About    → sections for the About page
+ *   - Contact  → sections for the Contact page
  *
  * Run: npx tsx scripts/organize-content.ts
  */
@@ -38,150 +41,130 @@ const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 // ─── Collection definitions ──────────────────────────────────────────
 const COLLECTIONS = [
-  {
-    name: "Global",
-    codename: "global",
-    description: "Site-wide config, navigation, and footer",
-  },
-  {
-    name: "Pages",
-    codename: "pages",
-    description: "All Page content items",
-  },
-  {
-    name: "Blog",
-    codename: "blog",
-    description: "Blog posts",
-  },
-  {
-    name: "Home Components",
-    codename: "home_components",
-    description: "Reusable blocks for the Home page",
-  },
-  {
-    name: "Services Components",
-    codename: "services_components",
-    description: "Reusable blocks for the Services page",
-  },
-  {
-    name: "About Components",
-    codename: "about_components",
-    description: "Reusable blocks for the About page",
-  },
-  {
-    name: "Contact Components",
-    codename: "contact_components",
-    description: "Reusable blocks for the Contact page",
-  },
+  { name: "Global", codename: "global" },
+  { name: "Pages", codename: "pages" },
+  { name: "Blog", codename: "blog" },
+  { name: "Home", codename: "home_components" },
+  { name: "Services", codename: "services_components" },
+  { name: "About", codename: "about_components" },
+  { name: "Contact", codename: "contact_components" },
 ];
 
-// ─── Item → Collection mapping ───────────────────────────────────────
-const ITEM_COLLECTIONS: Record<string, string> = {
-  // Global
-  site_config_item: "global",
-  nav_home: "global",
-  nav_services: "global",
-  nav_about: "global",
-  nav_contact: "global",
-  nav_blog: "global",
-  footer_col_company: "global",
-  footer_col_resources: "global",
-  site_footer: "global",
+// ─── Item → [collection, editor-friendly name] ──────────────────────
+const ITEMS: Record<string, [string, string]> = {
+  // ── Global ──
+  site_config_item: ["global", "Site Settings"],
+  nav_home: ["global", "Home Link"],
+  nav_services: ["global", "Services Link"],
+  nav_about: ["global", "About Link"],
+  nav_contact: ["global", "Contact Link"],
+  nav_blog: ["global", "Blog Link"],
+  footer_col_company: ["global", "Company Column"],
+  footer_col_resources: ["global", "Resources Column"],
+  site_footer: ["global", "Footer"],
 
-  // Pages
-  page_home: "pages",
-  page_services: "pages",
-  page_about: "pages",
-  page_contact: "pages",
+  // ── Pages ──
+  page_home: ["pages", "Home Page"],
+  page_services: ["pages", "Services Page"],
+  page_about: ["pages", "About Page"],
+  page_contact: ["pages", "Contact Page"],
 
-  // Blog
-  blog_future_web: "blog",
-  blog_cloud_migration: "blog",
-  blog_design_systems: "blog",
+  // ── Blog ──
+  blog_future_web: ["blog", "The Future of Web Development"],
+  blog_cloud_migration: ["blog", "Cloud Migration Best Practices"],
+  blog_design_systems: ["blog", "Building Design Systems That Scale"],
 
-  // Home Components
-  home_hero: "home_components",
-  home_logo_cloud: "home_components",
-  feature_speed: "home_components",
-  feature_secure: "home_components",
-  feature_scale: "home_components",
-  home_feature_grid: "home_components",
-  home_text_image: "home_components",
-  testimonial_sarah: "home_components",
-  testimonial_james: "home_components",
-  home_testimonials: "home_components",
-  home_cta: "home_components",
+  // ── Home ──
+  home_hero: ["home_components", "Hero Banner"],
+  home_logo_cloud: ["home_components", "Trusted By \u2014 Logos"],
+  feature_speed: ["home_components", "Lightning Fast"],
+  feature_secure: ["home_components", "Enterprise Security"],
+  feature_scale: ["home_components", "Infinite Scale"],
+  home_feature_grid: ["home_components", "Why Choose Us"],
+  home_text_image: ["home_components", "Our Mission"],
+  testimonial_sarah: ["home_components", "Sarah Chen \u2014 Testimonial"],
+  testimonial_james: ["home_components", "James Wilson \u2014 Testimonial"],
+  home_testimonials: ["home_components", "Client Testimonials"],
+  home_cta: ["home_components", "Ready to Get Started?"],
 
-  // Services Components
-  services_hero: "services_components",
-  service_web: "services_components",
-  service_mobile: "services_components",
-  service_cloud: "services_components",
-  services_feature_grid: "services_components",
-  pricing_starter: "services_components",
-  pricing_pro: "services_components",
-  pricing_enterprise: "services_components",
-  services_pricing: "services_components",
-  services_cta: "services_components",
+  // ── Services ──
+  services_hero: ["services_components", "Hero Banner"],
+  service_web: ["services_components", "Web Development"],
+  service_mobile: ["services_components", "Mobile Development"],
+  service_cloud: ["services_components", "Cloud Solutions"],
+  services_feature_grid: ["services_components", "What We Offer"],
+  pricing_starter: ["services_components", "Starter Plan"],
+  pricing_pro: ["services_components", "Professional Plan"],
+  pricing_enterprise: ["services_components", "Enterprise Plan"],
+  services_pricing: ["services_components", "Pricing"],
+  services_cta: ["services_components", "Need a Custom Solution?"],
 
-  // About Components
-  about_hero: "about_components",
-  about_text_image: "about_components",
-  value_innovation: "about_components",
-  value_quality: "about_components",
-  value_customer: "about_components",
-  about_values_grid: "about_components",
-  testimonial_maria: "about_components",
-  testimonial_alex: "about_components",
-  about_testimonials: "about_components",
+  // ── About ──
+  about_hero: ["about_components", "Hero Banner"],
+  about_text_image: ["about_components", "Our Story"],
+  value_innovation: ["about_components", "Innovation First"],
+  value_quality: ["about_components", "Quality Obsessed"],
+  value_customer: ["about_components", "Customer Focused"],
+  about_values_grid: ["about_components", "Our Values"],
+  testimonial_maria: ["about_components", "Maria Garcia \u2014 Testimonial"],
+  testimonial_alex: ["about_components", "Alex Thompson \u2014 Testimonial"],
+  about_testimonials: ["about_components", "Client Testimonials"],
 
-  // Contact Components
-  contact_hero: "contact_components",
-  contact_form_item: "contact_components",
-  faq_response: "contact_components",
-  faq_consultation: "contact_components",
-  faq_timeline: "contact_components",
-  contact_faq: "contact_components",
+  // ── Contact ──
+  contact_hero: ["contact_components", "Hero Banner"],
+  contact_form_item: ["contact_components", "Get In Touch Form"],
+  faq_response: ["contact_components", "What is your typical response time?"],
+  faq_consultation: [
+    "contact_components",
+    "Do you offer free consultations?",
+  ],
+  faq_timeline: [
+    "contact_components",
+    "What is the typical project timeline?",
+  ],
+  contact_faq: ["contact_components", "Frequently Asked Questions"],
 };
 
 // ═════════════════════════════════════════════════════════════════════
 async function main() {
-  console.log("📁 Organizing Kontent.ai content into collections\n");
+  console.log("📁 Organizing content and applying editor-friendly names\n");
 
-  // ── Step 1: Create collections ─────────────────────────────────────
-  console.log("Step 1: Creating collections...\n");
+  // ── Step 1: Create / rename collections ─────────────────────────────
+  console.log("Step 1: Setting up collections...\n");
 
-  // First, list existing collections to see what we have
   const existing = await client.listCollections().toPromise();
   const existingCodenames = new Set(
     existing.data.collections.map((c) => c.codename)
   );
   console.log(
-    `  Existing collections: ${[...existingCodenames].join(", ") || "(default only)"}`
+    `  Existing: ${[...existingCodenames].join(", ") || "(default only)"}`
   );
 
-  // Add new collections one by one (using addInto operations)
   const operations: any[] = [];
+
   for (const col of COLLECTIONS) {
     if (existingCodenames.has(col.codename)) {
-      console.log(`  Collection "${col.name}" already exists, skipping`);
-      continue;
+      // Rename existing collection (e.g. "Home Components" → "Home")
+      operations.push({
+        op: "replace" as const,
+        property_name: "name",
+        value: col.name,
+        reference: { codename: col.codename },
+      });
+    } else {
+      operations.push({
+        op: "addInto" as const,
+        value: { name: col.name, codename: col.codename },
+      });
     }
-    operations.push({
-      op: "addInto" as const,
-      value: {
-        name: col.name,
-        codename: col.codename,
-      },
-    });
   }
 
   if (operations.length > 0) {
     try {
       await client.setCollections().withData(operations).toPromise();
-      console.log(`  Created ${operations.length} new collections`);
+      console.log(`  ✓ Applied ${operations.length} collection updates`);
     } catch (e: any) {
-      console.error(`  Error creating collections: ${e.message}`);
+      console.error(`  Error updating collections: ${e.message}`);
       if (e.validationErrors?.length) {
         console.error(
           `  Details:`,
@@ -189,49 +172,45 @@ async function main() {
         );
       }
     }
-  } else {
-    console.log("  All collections already exist");
   }
   await delay(300);
 
-  // ── Step 2: Move items into collections ────────────────────────────
-  console.log("\nStep 2: Moving items into collections...\n");
+  // ── Step 2: Move items + set friendly names ─────────────────────────
+  console.log("\nStep 2: Moving items and setting friendly names...\n");
 
-  let moved = 0;
+  let updated = 0;
   let errors = 0;
 
-  for (const [itemCodename, collectionCodename] of Object.entries(
-    ITEM_COLLECTIONS
-  )) {
+  for (const [codename, [collection, displayName]] of Object.entries(ITEMS)) {
     try {
       await client
         .upsertContentItem()
-        .byItemCodename(itemCodename)
+        .byItemCodename(codename)
         .withData({
-          name: itemCodename, // name is required but we just re-use codename; it won't change the actual name
-          collection: { codename: collectionCodename },
+          name: displayName,
+          collection: { codename: collection },
         })
         .toPromise();
-      console.log(`  ✓ ${itemCodename} → ${collectionCodename}`);
-      moved++;
+      console.log(`  ✓ ${displayName}`);
+      updated++;
     } catch (e: any) {
-      console.error(`  ✗ ${itemCodename}: ${e.message}`);
+      console.error(`  ✗ ${codename}: ${e.message}`);
       errors++;
     }
     await delay(80);
   }
 
   console.log(
-    `\n✅ Done! Moved ${moved} items into collections (${errors} errors).`
+    `\n✅ Done! Updated ${updated} items (${errors} errors).\n`
   );
-  console.log("\nYour Kontent.ai dashboard now has these collections:");
-  console.log("  📌 Global          — site config, navigation, footer");
-  console.log("  📄 Pages           — Home, Services, About, Contact");
-  console.log("  📝 Blog            — blog posts");
-  console.log("  🏠 Home Components — hero, features, testimonials, CTA");
-  console.log("  🔧 Services Comp.  — hero, services grid, pricing, CTA");
-  console.log("  ℹ️  About Comp.     — hero, story, values, testimonials");
-  console.log("  📬 Contact Comp.   — hero, contact form, FAQ");
+  console.log("Your Kontent.ai dashboard now shows:");
+  console.log("  📌 Global   — Site Settings, navigation links, Footer");
+  console.log("  📄 Pages    — Home Page, Services Page, About Page, Contact Page");
+  console.log("  📝 Blog     — blog posts with their actual titles");
+  console.log("  🏠 Home     — Hero Banner, Why Choose Us, Our Mission, ...");
+  console.log("  🔧 Services — Hero Banner, What We Offer, Pricing, ...");
+  console.log("  ℹ️  About    — Hero Banner, Our Story, Our Values, ...");
+  console.log("  📬 Contact  — Hero Banner, Get In Touch Form, FAQ");
 }
 
 main().catch((err) => {
