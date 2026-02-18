@@ -77,15 +77,17 @@ async function main() {
     ? [{ space: { codename: "web" as const }, domain: baseUrl }]
     : [];
 
-  // Preview URL patterns for each content type that has its own route
+  // Preview URL patterns for each content type that has its own route.
+  // We use {Codename} instead of {URLslug} so items with an empty slug
+  // (e.g. the Home page) still get a working preview URL.
   const preview_url_patterns = [
     {
-      // Pages (home = empty slug, services = "services", etc.)
+      // Pages (home, services, about, etc.)
       content_type: { codename: "page" as const },
       url_patterns: [
         {
           space: null,
-          url_pattern: `${draftEndpoint}&slug=/{URLslug}`,
+          url_pattern: `${draftEndpoint}&codename={Codename}&type=page`,
         },
       ],
     },
@@ -95,7 +97,7 @@ async function main() {
       url_patterns: [
         {
           space: null,
-          url_pattern: `${draftEndpoint}&slug=/blog/{URLslug}`,
+          url_pattern: `${draftEndpoint}&codename={Codename}&type=blog_post`,
         },
       ],
     },
@@ -113,10 +115,10 @@ async function main() {
     console.log("Preview URLs configured successfully!\n");
     console.log("Content type URL patterns:");
     console.log(
-      `  page      → ${draftEndpoint}&slug=/{URLslug}`
+      `  page      → ${draftEndpoint}&codename={Codename}&type=page`
     );
     console.log(
-      `  blog_post → ${draftEndpoint}&slug=/blog/{URLslug}`
+      `  blog_post → ${draftEndpoint}&codename={Codename}&type=blog_post`
     );
     console.log(
       "\nEditors can now click 'Preview' in the Kontent.ai dashboard"
