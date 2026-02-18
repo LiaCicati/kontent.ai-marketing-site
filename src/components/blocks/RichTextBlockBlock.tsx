@@ -10,7 +10,6 @@ export default function RichTextBlockBlock({ data }: RichTextBlockBlockProps) {
     <section className="py-16 bg-white" data-kontent-item-id={data.system.id}>
       <div
         className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 rich-text"
-        data-kontent-element-codename="body"
       >
         <RichText
           content={data.elements.body.value}

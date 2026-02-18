@@ -14,7 +14,6 @@ export default function TestimonialsBlock({ data }: TestimonialsBlockProps) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2
           className="text-3xl md:text-4xl font-bold text-secondary text-center mb-16"
-          data-kontent-element-codename="title"
         >
           {title.value}
         </h2>
@@ -47,7 +46,6 @@ function TestimonialCardItem({ card }: { card: TestimonialCard }) {
       </svg>
       <p
         className="text-lg text-secondary mb-6 italic"
-        data-kontent-element-codename="quote"
       >
         &ldquo;{card.elements.quote.value}&rdquo;
       </p>
@@ -68,13 +66,11 @@ function TestimonialCardItem({ card }: { card: TestimonialCard }) {
         <div>
           <cite
             className="not-italic font-semibold text-secondary block"
-            data-kontent-element-codename="author_name"
           >
             {card.elements.author_name.value}
           </cite>
           <span
             className="text-sm text-muted"
-            data-kontent-element-codename="author_role"
           >
             {card.elements.author_role.value}
           </span>

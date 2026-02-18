@@ -35,13 +35,11 @@ export default function ContactFormBlock({ data }: ContactFormBlockProps) {
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <h2
           className="text-3xl md:text-4xl font-bold text-secondary mb-4"
-          data-kontent-element-codename="heading"
         >
           {heading.value}
         </h2>
         <div
           className="text-muted mb-8 rich-text"
-          data-kontent-element-codename="description"
         >
           <RichText content={description.value} />
         </div>

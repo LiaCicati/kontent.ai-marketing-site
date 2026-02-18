@@ -17,7 +17,6 @@ export default function FAQBlock({ data }: FAQBlockProps) {
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <h2
           className="text-3xl md:text-4xl font-bold text-secondary text-center mb-12"
-          data-kontent-element-codename="title"
         >
           {title.value}
         </h2>
@@ -47,7 +46,6 @@ function AccordionItem({ item }: { item: FAQItem }) {
       >
         <span
           className="text-base font-medium text-secondary"
-          data-kontent-element-codename="question"
         >
           {item.elements.question.value}
         </span>
@@ -75,7 +73,6 @@ function AccordionItem({ item }: { item: FAQItem }) {
       >
         <div
           className="px-6 text-muted rich-text"
-          data-kontent-element-codename="answer"
         >
           <RichText content={item.elements.answer.value} />
         </div>

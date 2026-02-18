@@ -97,7 +97,6 @@ export default async function BlogPage() {
                       )}
                       <h2
                         className="text-xl font-semibold text-secondary mb-2 group-hover:text-primary transition-colors"
-                        data-kontent-element-codename="title"
                       >
                         <Link href={`/blog/${post.elements.slug.value}`}>
                           {post.elements.title.value}
@@ -106,7 +105,6 @@ export default async function BlogPage() {
                       {post.elements.summary.value && (
                         <p
                           className="text-muted line-clamp-3"
-                          data-kontent-element-codename="summary"
                         >
                           {post.elements.summary.value}
                         </p>

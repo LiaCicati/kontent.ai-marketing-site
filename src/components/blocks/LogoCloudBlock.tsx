@@ -15,7 +15,6 @@ export default function LogoCloudBlock({ data }: LogoCloudBlockProps) {
         {title.value && (
           <p
             className="text-center text-sm font-semibold uppercase tracking-wider text-muted mb-8"
-            data-kontent-element-codename="title"
           >
             {title.value}
           </p>
@@ -23,7 +22,6 @@ export default function LogoCloudBlock({ data }: LogoCloudBlockProps) {
         {logoAssets.length > 0 && (
           <div
             className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6"
-            data-kontent-element-codename="logos"
           >
             {logoAssets.map((logo) => (
               <Image

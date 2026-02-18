@@ -21,7 +21,7 @@ export default function TextWithImageBlock({ data }: TextWithImageBlockProps) {
           } gap-12 items-center`}
         >
           {/* Image */}
-          <div className="w-full lg:w-1/2" data-kontent-element-codename="image">
+          <div className="w-full lg:w-1/2">
             {img ? (
               <Image
                 src={img.url}
@@ -50,7 +50,7 @@ export default function TextWithImageBlock({ data }: TextWithImageBlockProps) {
           </div>
 
           {/* Content */}
-          <div className="w-full lg:w-1/2" data-kontent-element-codename="content">
+          <div className="w-full lg:w-1/2">
             <div className="rich-text">
               <RichText content={content.value} />
             </div>

@@ -16,12 +16,11 @@ export default function PricingTableBlock({ data }: PricingTableBlockProps) {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2
             className="text-3xl md:text-4xl font-bold text-secondary mb-4"
-            data-kontent-element-codename="title"
           >
             {title.value}
           </h2>
           {subtitle.value && (
-            <p className="text-lg text-muted" data-kontent-element-codename="subtitle">
+            <p className="text-lg text-muted">
               {subtitle.value}
             </p>
           )}
@@ -59,7 +58,6 @@ function PricingCardItem({ card }: { card: PricingCard }) {
         className={`text-xl font-semibold mb-2 ${
           isPopular ? "text-white" : "text-secondary"
         }`}
-        data-kontent-element-codename="plan_name"
       >
         {card.elements.plan_name.value}
       </h3>
@@ -69,13 +67,11 @@ function PricingCardItem({ card }: { card: PricingCard }) {
           className={`text-4xl font-bold ${
             isPopular ? "text-white" : "text-secondary"
           }`}
-          data-kontent-element-codename="price"
         >
           {card.elements.price.value}
         </span>
         <span
           className={`text-sm ${isPopular ? "text-white/70" : "text-muted"}`}
-          data-kontent-element-codename="billing_period"
         >
           {card.elements.billing_period.value}
         </span>
@@ -85,7 +81,6 @@ function PricingCardItem({ card }: { card: PricingCard }) {
         className={`flex-1 mb-8 rich-text ${
           isPopular ? "[&_li]:text-white/90" : "[&_li]:text-muted"
         }`}
-        data-kontent-element-codename="feature_list"
       >
         <RichText content={card.elements.feature_list.value} />
       </div>
@@ -97,7 +92,6 @@ function PricingCardItem({ card }: { card: PricingCard }) {
             ? "bg-white text-primary hover:bg-gray-50"
             : "bg-primary text-white hover:bg-primary-dark"
         }`}
-        data-kontent-element-codename="cta_label"
       >
         {card.elements.cta_label.value}
       </Link>

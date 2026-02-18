@@ -16,12 +16,11 @@ export default function FeatureGridBlock({ data }: FeatureGridBlockProps) {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2
             className="text-3xl md:text-4xl font-bold text-secondary mb-4"
-            data-kontent-element-codename="title"
           >
             {title.value}
           </h2>
           {subtitle.value && (
-            <p className="text-lg text-muted" data-kontent-element-codename="subtitle">
+            <p className="text-lg text-muted">
               {subtitle.value}
             </p>
           )}
@@ -75,11 +74,10 @@ function FeatureCardItem({ card }: { card: FeatureCard }) {
       )}
       <h3
         className="text-xl font-semibold text-secondary mb-3"
-        data-kontent-element-codename="title"
       >
         {card.elements.title.value}
       </h3>
-      <div className="text-muted" data-kontent-element-codename="description">
+      <div className="text-muted">
         <RichText content={card.elements.description.value} />
       </div>
     </div>
