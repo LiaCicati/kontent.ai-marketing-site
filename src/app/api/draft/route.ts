@@ -59,10 +59,16 @@ export async function GET(request: NextRequest) {
   const draft = await draftMode();
   draft.enable();
 
-  // Determine locale (default to "en")
-  const localeParam = searchParams.get("locale") ?? defaultLocale;
-  const locale = isValidLocale(localeParam) ? localeParam : defaultLocale;
-  const language = localeToKontentLanguage[locale as Locale];
+  // {Lang} macro resolves to Kontent.ai language codename ("default" for
+  // English, "ro" for Romanian). Map it to the URL locale.
+  const kontentLangToLocale: Record<string, Locale> = Object.fromEntries(
+    Object.entries(localeToKontentLanguage).map(([loc, lang]) => [lang, loc as Locale])
+  );
+  const localeParam = searchParams.get("locale") ?? "";
+  const locale =
+    kontentLangToLocale[localeParam] ??
+    (isValidLocale(localeParam) ? localeParam : defaultLocale);
+  const language = localeToKontentLanguage[locale];
 
   // Support both approaches:
   // 1. Direct slug (legacy): ?slug=/services
