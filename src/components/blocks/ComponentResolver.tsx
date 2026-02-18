@@ -13,22 +13,23 @@ import RichTextBlockBlock from "./RichTextBlockBlock";
 
 interface ComponentResolverProps {
   items: IContentItem[];
+  locale: string;
 }
 
-export default function ComponentResolver({ items }: ComponentResolverProps) {
+export default function ComponentResolver({ items, locale }: ComponentResolverProps) {
   return (
     <main>
       {items.map((item) => (
-        <BlockRenderer key={item.system.id} item={item} />
+        <BlockRenderer key={item.system.id} item={item} locale={locale} />
       ))}
     </main>
   );
 }
 
-function BlockRenderer({ item }: { item: IContentItem }) {
+function BlockRenderer({ item, locale }: { item: IContentItem; locale: string }) {
   switch (item.system.type) {
     case contentTypes.hero:
-      return <HeroBlock data={item as any} />;
+      return <HeroBlock data={item as any} locale={locale} />;
     case contentTypes.feature_grid:
       return <FeatureGridBlock data={item as any} />;
     case contentTypes.text_with_image:
@@ -36,9 +37,9 @@ function BlockRenderer({ item }: { item: IContentItem }) {
     case contentTypes.testimonials:
       return <TestimonialsBlock data={item as any} />;
     case contentTypes.call_to_action:
-      return <CallToActionBlock data={item as any} />;
+      return <CallToActionBlock data={item as any} locale={locale} />;
     case contentTypes.pricing_table:
-      return <PricingTableBlock data={item as any} />;
+      return <PricingTableBlock data={item as any} locale={locale} />;
     case contentTypes.contact_form:
       return <ContactFormBlock data={item as any} />;
     case contentTypes.logo_cloud:

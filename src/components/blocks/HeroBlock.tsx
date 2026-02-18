@@ -1,12 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Hero } from "@/lib/models";
+import { localizeHref } from "@/lib/i18n";
 
 interface HeroBlockProps {
   data: Hero;
+  locale: string;
 }
 
-export default function HeroBlock({ data }: HeroBlockProps) {
+export default function HeroBlock({ data, locale }: HeroBlockProps) {
   const { headline, subheadline, cta_button_label, cta_button_url, background_image } =
     data.elements;
 
@@ -38,7 +40,7 @@ export default function HeroBlock({ data }: HeroBlockProps) {
           )}
           {cta_button_label.value && cta_button_url.value && (
             <Link
-              href={cta_button_url.value}
+              href={localizeHref(cta_button_url.value, locale)}
               className="inline-flex items-center rounded-lg bg-primary px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-primary-dark transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
               {cta_button_label.value}

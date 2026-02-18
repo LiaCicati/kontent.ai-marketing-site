@@ -1,4 +1,7 @@
-import { DeliveryClient, createDeliveryClient } from "@kontent-ai/delivery-sdk";
+import {
+  DeliveryClient,
+  createDeliveryClient,
+} from "@kontent-ai/delivery-sdk";
 import type { Page, SiteConfig, BlogPost } from "./models";
 
 let clientInstance: DeliveryClient | null = null;
@@ -33,27 +36,32 @@ function resolveClient(preview: boolean): DeliveryClient {
 
 export async function getPage(
   slug: string,
-  preview = false
+  preview = false,
+  language = "default"
 ): Promise<Page | null> {
   const client = resolveClient(preview);
-
   const filterSlug = slug === "" ? "" : slug;
 
   const response = await client
     .items<Page>()
     .type("page")
     .equalsFilter("elements.slug", filterSlug)
+    .languageParameter(language)
     .depthParameter(3)
     .toPromise();
 
   return response.data.items[0] ?? null;
 }
 
-export async function getAllPages(preview = false): Promise<Page[]> {
+export async function getAllPages(
+  preview = false,
+  language = "default"
+): Promise<Page[]> {
   const client = resolveClient(preview);
   const response = await client
     .items<Page>()
     .type("page")
+    .languageParameter(language)
     .depthParameter(3)
     .toPromise();
 
@@ -61,12 +69,14 @@ export async function getAllPages(preview = false): Promise<Page[]> {
 }
 
 export async function getSiteConfig(
-  preview = false
+  preview = false,
+  language = "default"
 ): Promise<SiteConfig | null> {
   const client = resolveClient(preview);
   const response = await client
     .items<SiteConfig>()
     .type("site_config")
+    .languageParameter(language)
     .depthParameter(3)
     .limitParameter(1)
     .toPromise();
@@ -76,22 +86,28 @@ export async function getSiteConfig(
 
 export async function getContentItem(
   codename: string,
-  preview = false
+  preview = false,
+  language = "default"
 ) {
   const client = resolveClient(preview);
   const response = await client
     .item(codename)
+    .languageParameter(language)
     .depthParameter(3)
     .toPromise();
 
   return response.data.item ?? null;
 }
 
-export async function getBlogPosts(preview = false): Promise<BlogPost[]> {
+export async function getBlogPosts(
+  preview = false,
+  language = "default"
+): Promise<BlogPost[]> {
   const client = resolveClient(preview);
   const response = await client
     .items<BlogPost>()
     .type("blog_post")
+    .languageParameter(language)
     .orderByDescending("elements.publish_date")
     .depthParameter(1)
     .toPromise();
@@ -101,13 +117,15 @@ export async function getBlogPosts(preview = false): Promise<BlogPost[]> {
 
 export async function getBlogPost(
   slug: string,
-  preview = false
+  preview = false,
+  language = "default"
 ): Promise<BlogPost | null> {
   const client = resolveClient(preview);
   const response = await client
     .items<BlogPost>()
     .type("blog_post")
     .equalsFilter("elements.slug", slug)
+    .languageParameter(language)
     .depthParameter(2)
     .toPromise();
 

@@ -4,13 +4,15 @@ import type {
   FooterColumn,
   NavigationItem,
 } from "@/lib/models";
+import { localizeHref } from "@/lib/i18n";
 
 interface FooterProps {
   footer: FooterModel | null;
   siteName: string;
+  locale: string;
 }
 
-export default function Footer({ footer, siteName }: FooterProps) {
+export default function Footer({ footer, siteName, locale }: FooterProps) {
   if (!footer) {
     return (
       <footer className="bg-secondary text-white py-12">
@@ -61,7 +63,7 @@ export default function Footer({ footer, siteName }: FooterProps) {
                   (link) => (
                     <li key={link.system.codename}>
                       <Link
-                        href={link.elements.url.value}
+                        href={localizeHref(link.elements.url.value, locale)}
                         className="text-sm text-muted-light hover:text-white transition-colors"
                       >
                         {link.elements.label.value}
@@ -77,7 +79,7 @@ export default function Footer({ footer, siteName }: FooterProps) {
         {/* Copyright */}
         <div className="mt-12 pt-8 border-t border-white/10 text-sm text-muted-light text-center">
           {footer.elements.copyright_text.value ||
-            `© ${new Date().getFullYear()} ${siteName}. All rights reserved.`}
+            `\u00A9 ${new Date().getFullYear()} ${siteName}. All rights reserved.`}
         </div>
       </div>
     </footer>

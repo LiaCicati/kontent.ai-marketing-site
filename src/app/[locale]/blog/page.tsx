@@ -3,9 +3,22 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getBlogPosts, getSiteConfig } from "@/lib/kontent";
+import {
+  localeToKontentLanguage,
+  localeToDateLocale,
+  type Locale,
+} from "@/lib/i18n";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const siteConfig = await getSiteConfig();
+interface BlogPageProps {
+  params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: BlogPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  const language = localeToKontentLanguage[locale as Locale] ?? "default";
+  const siteConfig = await getSiteConfig(false, language);
   return {
     title: siteConfig?.elements.blog_heading.value || "Blog",
     description: siteConfig?.elements.blog_subtitle.value || "",
@@ -14,11 +27,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const revalidate = 60;
 
-export default async function BlogPage() {
+export default async function BlogPage({ params }: BlogPageProps) {
+  const { locale } = await params;
+  const language = localeToKontentLanguage[locale as Locale] ?? "default";
+  const dateLocale = localeToDateLocale[locale as Locale] ?? "en-US";
   const draft = await draftMode();
   const [posts, siteConfig] = await Promise.all([
-    getBlogPosts(draft.isEnabled),
-    getSiteConfig(draft.isEnabled),
+    getBlogPosts(draft.isEnabled, language),
+    getSiteConfig(draft.isEnabled, language),
   ]);
 
   const heading = siteConfig?.elements.blog_heading.value || "Blog";
@@ -51,7 +67,7 @@ export default async function BlogPage() {
                 const date = post.elements.publish_date.value
                   ? new Date(
                       post.elements.publish_date.value
-                    ).toLocaleDateString("en-US", {
+                    ).toLocaleDateString(dateLocale, {
                       year: "numeric",
                       month: "long",
                       day: "numeric",
@@ -98,7 +114,7 @@ export default async function BlogPage() {
                       <h2
                         className="text-xl font-semibold text-secondary mb-2 group-hover:text-primary transition-colors"
                       >
-                        <Link href={`/blog/${post.elements.slug.value}`}>
+                        <Link href={`/${locale}/blog/${post.elements.slug.value}`}>
                           {post.elements.title.value}
                         </Link>
                       </h2>

@@ -1,12 +1,14 @@
 import Link from "next/link";
 import type { PricingTable, PricingCard } from "@/lib/models";
 import RichText from "@/components/ui/RichText";
+import { localizeHref } from "@/lib/i18n";
 
 interface PricingTableBlockProps {
   data: PricingTable;
+  locale: string;
 }
 
-export default function PricingTableBlock({ data }: PricingTableBlockProps) {
+export default function PricingTableBlock({ data, locale }: PricingTableBlockProps) {
   const { title, subtitle, cards } = data.elements;
   const pricingCards = cards.linkedItems as PricingCard[];
 
@@ -28,7 +30,7 @@ export default function PricingTableBlock({ data }: PricingTableBlockProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {pricingCards.map((card) => (
-            <PricingCardItem key={card.system.codename} card={card} />
+            <PricingCardItem key={card.system.codename} card={card} locale={locale} />
           ))}
         </div>
       </div>
@@ -36,7 +38,7 @@ export default function PricingTableBlock({ data }: PricingTableBlockProps) {
   );
 }
 
-function PricingCardItem({ card }: { card: PricingCard }) {
+function PricingCardItem({ card, locale }: { card: PricingCard; locale: string }) {
   const isPopular = card.elements.is_popular.value?.[0]?.codename === "yes";
 
   return (
@@ -82,11 +84,11 @@ function PricingCardItem({ card }: { card: PricingCard }) {
           isPopular ? "[&_li]:text-white/90" : "[&_li]:text-muted"
         }`}
       >
-        <RichText content={card.elements.feature_list.value} />
+        <RichText content={card.elements.feature_list.value} locale={locale} />
       </div>
 
       <Link
-        href={card.elements.cta_url.value || "/contact"}
+        href={localizeHref(card.elements.cta_url.value || "/contact", locale)}
         className={`block text-center rounded-lg px-6 py-3 text-base font-semibold transition-colors ${
           isPopular
             ? "bg-white text-primary hover:bg-gray-50"

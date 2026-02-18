@@ -4,25 +4,44 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getBlogPost, getBlogPosts, getSiteConfig } from "@/lib/kontent";
+import {
+  locales,
+  localeToKontentLanguage,
+  localeToDateLocale,
+  type Locale,
+} from "@/lib/i18n";
 import RichText from "@/components/ui/RichText";
 
 interface BlogPostPageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }
 
 export async function generateStaticParams() {
-  const posts = await getBlogPosts();
-  return posts.map((post) => ({
-    slug: post.elements.slug.value,
-  }));
+  const params: { locale: string; slug: string }[] = [];
+
+  for (const locale of locales) {
+    const language = localeToKontentLanguage[locale];
+    const posts = await getBlogPosts(false, language);
+
+    for (const post of posts) {
+      params.push({
+        locale,
+        slug: post.elements.slug.value,
+      });
+    }
+  }
+
+  return params;
 }
 
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
   const resolvedParams = await params;
+  const language =
+    localeToKontentLanguage[resolvedParams.locale as Locale] ?? "default";
   const draft = await draftMode();
-  const post = await getBlogPost(resolvedParams.slug, draft.isEnabled);
+  const post = await getBlogPost(resolvedParams.slug, draft.isEnabled, language);
 
   if (!post) return {};
 
@@ -36,10 +55,13 @@ export const revalidate = 60;
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const resolvedParams = await params;
+  const locale = resolvedParams.locale;
+  const language = localeToKontentLanguage[locale as Locale] ?? "default";
+  const dateLocale = localeToDateLocale[locale as Locale] ?? "en-US";
   const draft = await draftMode();
   const [post, siteConfig] = await Promise.all([
-    getBlogPost(resolvedParams.slug, draft.isEnabled),
-    getSiteConfig(draft.isEnabled),
+    getBlogPost(resolvedParams.slug, draft.isEnabled, language),
+    getSiteConfig(draft.isEnabled, language),
   ]);
 
   if (!post) {
@@ -50,11 +72,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     siteConfig?.elements.back_to_blog_label.value || "Back to Blog";
   const image = post.elements.image.value?.[0];
   const date = post.elements.publish_date.value
-    ? new Date(post.elements.publish_date.value).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
+    ? new Date(post.elements.publish_date.value).toLocaleDateString(
+        dateLocale,
+        {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }
+      )
     : null;
 
   return (
@@ -63,7 +88,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <section className="bg-secondary text-white py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <Link
-            href="/blog"
+            href={`/${locale}/blog`}
             className="inline-flex items-center text-sm text-gray-400 hover:text-white mb-6 transition-colors"
           >
             <svg
@@ -121,6 +146,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <RichText
             content={post.elements.body.value}
             linkedItems={post.elements.body.linkedItems}
+            locale={locale}
           />
         </div>
       </article>

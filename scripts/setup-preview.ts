@@ -87,7 +87,7 @@ async function main() {
       url_patterns: [
         {
           space: null,
-          url_pattern: `${draftEndpoint}&codename={Codename}&type=page`,
+          url_pattern: `${draftEndpoint}&codename={Codename}&type=page&locale={Language}`,
         },
       ],
     },
@@ -97,7 +97,7 @@ async function main() {
       url_patterns: [
         {
           space: null,
-          url_pattern: `${draftEndpoint}&codename={Codename}&type=blog_post`,
+          url_pattern: `${draftEndpoint}&codename={Codename}&type=blog_post&locale={Language}`,
         },
       ],
     },
@@ -115,10 +115,10 @@ async function main() {
     console.log("Preview URLs configured successfully!\n");
     console.log("Content type URL patterns:");
     console.log(
-      `  page      → ${draftEndpoint}&codename={Codename}&type=page`
+      `  page      → ${draftEndpoint}&codename={Codename}&type=page&locale={Language}`
     );
     console.log(
-      `  blog_post → ${draftEndpoint}&codename={Codename}&type=blog_post`
+      `  blog_post → ${draftEndpoint}&codename={Codename}&type=blog_post&locale={Language}`
     );
     console.log(
       "\nEditors can now click 'Preview' in the Kontent.ai dashboard"

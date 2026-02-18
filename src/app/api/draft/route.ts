@@ -2,6 +2,12 @@ import { draftMode } from "next/headers";
 import { redirect } from "next/navigation";
 import { NextRequest } from "next/server";
 import { createDeliveryClient } from "@kontent-ai/delivery-sdk";
+import {
+  isValidLocale,
+  localeToKontentLanguage,
+  defaultLocale,
+  type Locale,
+} from "@/lib/i18n";
 
 const previewClient = createDeliveryClient({
   environmentId: process.env.KONTENT_PROJECT_ID!,
@@ -14,11 +20,13 @@ const previewClient = createDeliveryClient({
  */
 async function resolveSlug(
   codename: string,
-  type: string
+  type: string,
+  language: string
 ): Promise<string> {
   try {
     const response = await previewClient
       .item(codename)
+      .languageParameter(language)
       .depthParameter(0)
       .toPromise();
 
@@ -51,6 +59,11 @@ export async function GET(request: NextRequest) {
   const draft = await draftMode();
   draft.enable();
 
+  // Determine locale (default to "en")
+  const localeParam = searchParams.get("locale") ?? defaultLocale;
+  const locale = isValidLocale(localeParam) ? localeParam : defaultLocale;
+  const language = localeToKontentLanguage[locale as Locale];
+
   // Support both approaches:
   // 1. Direct slug (legacy): ?slug=/services
   // 2. Codename + type (Web Spotlight): ?codename=page_home&type=page
@@ -59,11 +72,11 @@ export async function GET(request: NextRequest) {
   const type = searchParams.get("type") ?? "page";
 
   if (slug) {
-    redirect(slug);
+    redirect(`/${locale}${slug.startsWith("/") ? slug : `/${slug}`}`);
   } else if (codename) {
-    const resolvedPath = await resolveSlug(codename, type);
-    redirect(resolvedPath);
+    const resolvedPath = await resolveSlug(codename, type, language);
+    redirect(`/${locale}${resolvedPath}`);
   } else {
-    redirect("/");
+    redirect(`/${locale}`);
   }
 }

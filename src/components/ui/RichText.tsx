@@ -15,9 +15,10 @@ import type { IContentItem } from "@kontent-ai/delivery-sdk";
 interface RichTextProps {
   content: string;
   linkedItems?: IContentItem[];
+  locale?: string;
 }
 
-export default function RichText({ content, linkedItems }: RichTextProps) {
+export default function RichText({ content, linkedItems, locale }: RichTextProps) {
   const portableText = useMemo(() => {
     if (!content) return [];
     try {
@@ -62,15 +63,16 @@ export default function RichText({ content, linkedItems }: RichTextProps) {
           const item = linkedItems?.find(
             (li) => li.system.id === value?.contentItemLink?._ref
           );
-          return (
-            <a href={item ? `/${item.system.codename}` : "#"}>
-              {children}
-            </a>
-          );
+          const href = item
+            ? locale
+              ? `/${locale}/${item.system.codename}`
+              : `/${item.system.codename}`
+            : "#";
+          return <a href={href}>{children}</a>;
         },
       },
     }),
-    [linkedItems]
+    [linkedItems, locale]
   );
 
   if (!content) return null;

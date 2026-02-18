@@ -3,15 +3,18 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import type { NavigationItem as NavItemModel } from "@/lib/models";
+import { locales, localeDisplayNames, localizeHref, type Locale } from "@/lib/i18n";
 
 interface HeaderProps {
   siteName: string;
   logoUrl?: string;
   items: NavItemModel[];
+  locale: string;
 }
 
-export default function Header({ siteName, logoUrl, items }: HeaderProps) {
+export default function Header({ siteName, logoUrl, items, locale }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -22,7 +25,7 @@ export default function Header({ siteName, logoUrl, items }: HeaderProps) {
       >
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
+          <Link href={localizeHref("/", locale)} className="flex items-center gap-2">
             {logoUrl && (
               <Image
                 src={logoUrl}
@@ -38,13 +41,16 @@ export default function Header({ siteName, logoUrl, items }: HeaderProps) {
           </Link>
 
           {/* Desktop nav */}
-          <ul className="hidden md:flex items-center gap-8">
-            {items.map((item) => (
-              <li key={item.system.codename}>
-                <NavLink item={item} />
-              </li>
-            ))}
-          </ul>
+          <div className="hidden md:flex items-center gap-8">
+            <ul className="flex items-center gap-8">
+              {items.map((item) => (
+                <li key={item.system.codename}>
+                  <NavLink item={item} locale={locale} />
+                </li>
+              ))}
+            </ul>
+            <LanguageSwitcher locale={locale} />
+          </div>
 
           {/* Mobile hamburger */}
           <button
@@ -89,7 +95,7 @@ export default function Header({ siteName, logoUrl, items }: HeaderProps) {
             {items.map((item) => (
               <li key={item.system.codename}>
                 <Link
-                  href={item.elements.url.value}
+                  href={localizeHref(item.elements.url.value, locale)}
                   className="block rounded-md px-3 py-2 text-base font-medium text-muted hover:bg-surface hover:text-secondary"
                   onClick={() => setMobileOpen(false)}
                 >
@@ -98,13 +104,16 @@ export default function Header({ siteName, logoUrl, items }: HeaderProps) {
               </li>
             ))}
           </ul>
+          <div className="px-3 pt-3 border-t border-border mt-2">
+            <LanguageSwitcher locale={locale} />
+          </div>
         </div>
       </nav>
     </header>
   );
 }
 
-function NavLink({ item }: { item: NavItemModel }) {
+function NavLink({ item, locale }: { item: NavItemModel; locale: string }) {
   const hasChildren =
     item.elements.children?.linkedItems &&
     item.elements.children.linkedItems.length > 0;
@@ -112,7 +121,7 @@ function NavLink({ item }: { item: NavItemModel }) {
   if (!hasChildren) {
     return (
       <Link
-        href={item.elements.url.value}
+        href={localizeHref(item.elements.url.value, locale)}
         className="text-sm font-medium text-muted hover:text-secondary transition-colors"
       >
         {item.elements.label.value}
@@ -123,7 +132,7 @@ function NavLink({ item }: { item: NavItemModel }) {
   return (
     <div className="relative group">
       <Link
-        href={item.elements.url.value}
+        href={localizeHref(item.elements.url.value, locale)}
         className="text-sm font-medium text-muted hover:text-secondary transition-colors"
       >
         {item.elements.label.value}
@@ -132,7 +141,7 @@ function NavLink({ item }: { item: NavItemModel }) {
         {item.elements.children.linkedItems.map((child) => (
           <li key={child.system.codename}>
             <Link
-              href={child.elements.url.value}
+              href={localizeHref(child.elements.url.value, locale)}
               className="block px-4 py-2 text-sm text-muted hover:bg-surface hover:text-secondary"
             >
               {child.elements.label.value}
@@ -140,6 +149,37 @@ function NavLink({ item }: { item: NavItemModel }) {
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+function LanguageSwitcher({ locale }: { locale: string }) {
+  const pathname = usePathname();
+
+  // Strip the current locale prefix from the pathname
+  const pathWithoutLocale = pathname.replace(new RegExp(`^/${locale}(/|$)`), "/");
+
+  return (
+    <div className="flex items-center gap-2 text-sm">
+      {locales.map((l) => {
+        const isActive = l === locale;
+        const href = `/${l}${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`;
+
+        return (
+          <Link
+            key={l}
+            href={href}
+            className={`px-2 py-1 rounded transition-colors ${
+              isActive
+                ? "bg-primary text-white font-semibold"
+                : "text-muted hover:text-secondary hover:bg-surface"
+            }`}
+            aria-current={isActive ? "true" : undefined}
+          >
+            {localeDisplayNames[l as Locale]}
+          </Link>
+        );
+      })}
     </div>
   );
 }

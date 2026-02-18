@@ -3,19 +3,25 @@
 import { useEffect } from "react";
 import KontentSmartLink from "@kontent-ai/smart-link";
 
-export default function SmartLinkProvider() {
+interface SmartLinkProviderProps {
+  languageCodename?: string;
+}
+
+export default function SmartLinkProvider({
+  languageCodename = "default",
+}: SmartLinkProviderProps) {
   useEffect(() => {
     const instance = KontentSmartLink.initialize({
       defaultDataAttributes: {
         environmentId: process.env.NEXT_PUBLIC_KONTENT_ENVIRONMENT_ID!,
-        languageCodename: "default",
+        languageCodename,
       },
     });
 
     return () => {
       instance.destroy();
     };
-  }, []);
+  }, [languageCodename]);
 
   return null;
 }

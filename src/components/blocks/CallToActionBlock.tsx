@@ -1,12 +1,14 @@
 import Link from "next/link";
 import type { CallToAction } from "@/lib/models";
 import RichText from "@/components/ui/RichText";
+import { localizeHref } from "@/lib/i18n";
 
 interface CallToActionBlockProps {
   data: CallToAction;
+  locale: string;
 }
 
-export default function CallToActionBlock({ data }: CallToActionBlockProps) {
+export default function CallToActionBlock({ data, locale }: CallToActionBlockProps) {
   const { headline, body, button_label, button_url } = data.elements;
 
   return (
@@ -20,11 +22,11 @@ export default function CallToActionBlock({ data }: CallToActionBlockProps) {
         <div
           className="text-lg text-white/80 mb-8 max-w-2xl mx-auto rich-text"
         >
-          <RichText content={body.value} />
+          <RichText content={body.value} locale={locale} />
         </div>
         {button_label.value && button_url.value && (
           <Link
-            href={button_url.value}
+            href={localizeHref(button_url.value, locale)}
             className="inline-flex items-center rounded-lg bg-white px-8 py-3 text-base font-semibold text-primary shadow-sm hover:bg-gray-50 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             {button_label.value}
