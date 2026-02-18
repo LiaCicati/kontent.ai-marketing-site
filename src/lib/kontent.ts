@@ -97,3 +97,18 @@ export async function getBlogPosts(preview = false): Promise<BlogPost[]> {
 
   return response.data.items;
 }
+
+export async function getBlogPost(
+  slug: string,
+  preview = false
+): Promise<BlogPost | null> {
+  const client = resolveClient(preview);
+  const response = await client
+    .items<BlogPost>()
+    .type("blog_post")
+    .equalsFilter("elements.slug", slug)
+    .depthParameter(2)
+    .toPromise();
+
+  return response.data.items[0] ?? null;
+}
