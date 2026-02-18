@@ -62,11 +62,13 @@ async function addType(
       }))
       .toPromise();
   } catch (e: any) {
-    if (e?.response?.status === 409) {
+    const status = e?.response?.status ?? e?.originalError?.response?.status;
+    const msg = e?.message ?? "";
+    if (status === 409 || msg.includes("not unique") || msg.includes("already exists")) {
       console.log(`    (already exists, skipping)`);
-      return;
+    } else {
+      throw e;
     }
-    throw e;
   }
   await delay(200);
 
@@ -93,7 +95,10 @@ async function addItem(name: string, codename: string, typeCodename: string) {
       .withData({ name, codename, type: { codename: typeCodename } })
       .toPromise();
   } catch (e: any) {
-    if (e?.response?.status === 409) {
+    const status = e?.response?.status ?? e?.originalError?.response?.status;
+    const msg = e?.message ?? "";
+    const valErrors = JSON.stringify(e?.validationErrors ?? []);
+    if (status === 409 || msg.includes("not unique") || msg.includes("already exists") || msg.includes("already used") || valErrors.includes("already used")) {
       console.log(`    (already exists, skipping)`);
     } else {
       throw e;
@@ -102,26 +107,84 @@ async function addItem(name: string, codename: string, typeCodename: string) {
   await delay(100);
 }
 
+let languageCodename = "default";
+
+async function detectLanguage() {
+  try {
+    const response = await client.listLanguages().toPromise();
+    const langs = response.data.items;
+    if (langs.length > 0) {
+      languageCodename = langs[0].codename;
+      console.log(`  Detected language: ${languageCodename}`);
+    }
+  } catch (e: any) {
+    console.log(`  Could not detect language, using '${languageCodename}'`);
+  }
+}
+
 async function upsertVariant(codename: string, elements: any[]) {
   console.log(`  Setting content: ${codename}`);
-  await client
-    .upsertLanguageVariant()
-    .byItemCodename(codename)
-    .byLanguageCodename("default")
-    .withData((builder) => ({
-      elements: elements.map((el) => {
-        if (el._type === "text") return builder.textElement(el);
-        if (el._type === "rich_text") return builder.richTextElement(el);
-        if (el._type === "linked_items") return builder.linkedItemsElement(el);
-        if (el._type === "multiple_choice")
-          return builder.multipleChoiceElement(el);
-        if (el._type === "url_slug") return builder.urlSlugElement(el);
-        if (el._type === "date_time") return builder.dateTimeElement(el);
-        if (el._type === "asset") return builder.assetElement(el);
-        return el;
-      }),
-    }))
+  try {
+    await client
+      .upsertLanguageVariant()
+      .byItemCodename(codename)
+      .byLanguageCodename(languageCodename)
+      .withData((builder) => ({
+        elements: elements.map((el) => {
+          if (el._type === "text") return builder.textElement(el);
+          if (el._type === "rich_text") return builder.richTextElement(el);
+          if (el._type === "linked_items") return builder.linkedItemsElement(el);
+          if (el._type === "multiple_choice")
+            return builder.multipleChoiceElement(el);
+          if (el._type === "url_slug") return builder.urlSlugElement(el);
+          if (el._type === "date_time") return builder.dateTimeElement(el);
+          if (el._type === "asset") return builder.assetElement(el);
+          return el;
+        }),
+      }))
     .toPromise();
+  } catch (e: any) {
+    // If variant is published, create a new version and retry
+    if (e.message?.includes("published") || e.message?.includes("new version")) {
+      console.log(`    (creating new version for ${codename})`);
+      try {
+        await client
+          .createNewVersionOfLanguageVariant()
+          .byItemCodename(codename)
+          .byLanguageCodename(languageCodename)
+          .toPromise();
+        await delay(100);
+        // Retry the upsert
+        await client
+          .upsertLanguageVariant()
+          .byItemCodename(codename)
+          .byLanguageCodename(languageCodename)
+          .withData((builder) => ({
+            elements: elements.map((el) => {
+              if (el._type === "text") return builder.textElement(el);
+              if (el._type === "rich_text") return builder.richTextElement(el);
+              if (el._type === "linked_items") return builder.linkedItemsElement(el);
+              if (el._type === "multiple_choice")
+                return builder.multipleChoiceElement(el);
+              if (el._type === "url_slug") return builder.urlSlugElement(el);
+              if (el._type === "date_time") return builder.dateTimeElement(el);
+              if (el._type === "asset") return builder.assetElement(el);
+              return el;
+            }),
+          }))
+          .toPromise();
+      } catch (retryErr: any) {
+        console.error(`    ERROR retry ${codename}: ${retryErr.message}`);
+        throw retryErr;
+      }
+    } else {
+      console.error(`    ERROR setting ${codename}: ${e.message}`);
+      if (e.validationErrors?.length) {
+        console.error(`    Validation errors:`, JSON.stringify(e.validationErrors, null, 2));
+      }
+      throw e;
+    }
+  }
   await delay(100);
 }
 
@@ -130,7 +193,7 @@ async function publishItem(codename: string) {
     await client
       .publishLanguageVariant()
       .byItemCodename(codename)
-      .byLanguageCodename("default")
+      .byLanguageCodename(languageCodename)
       .withoutData()
       .toPromise();
   } catch (e: any) {
@@ -178,6 +241,8 @@ const dateTime = (codename: string, value: string) => ({
 // ═════════════════════════════════════════════════════════════════════
 async function main() {
   console.log("🚀 Kontent.ai Setup Script\n");
+
+  await detectLanguage();
 
   // ── Step 1: Create Content Types ─────────────────────────────────
   console.log("Step 1: Creating content types...\n");
