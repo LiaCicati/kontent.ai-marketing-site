@@ -20,6 +20,7 @@ function getPreviewClient(): DeliveryClient {
       previewApiKey: process.env.KONTENT_PREVIEW_API_KEY!,
       defaultQueryConfig: {
         usePreviewMode: true,
+        waitForLoadingNewContent: true,
       },
     });
   }

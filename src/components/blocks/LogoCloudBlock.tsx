@@ -10,15 +10,21 @@ export default function LogoCloudBlock({ data }: LogoCloudBlockProps) {
   const logoAssets = logos.value ?? [];
 
   return (
-    <section className="py-16 bg-surface">
+    <section className="py-16 bg-surface" data-kontent-item-id={data.system.id}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {title.value && (
-          <p className="text-center text-sm font-semibold uppercase tracking-wider text-muted mb-8">
+          <p
+            className="text-center text-sm font-semibold uppercase tracking-wider text-muted mb-8"
+            data-kontent-element-codename="title"
+          >
             {title.value}
           </p>
         )}
         {logoAssets.length > 0 && (
-          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
+          <div
+            className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6"
+            data-kontent-element-codename="logos"
+          >
             {logoAssets.map((logo) => (
               <Image
                 key={logo.url}

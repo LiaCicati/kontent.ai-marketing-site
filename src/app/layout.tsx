@@ -5,6 +5,7 @@ import { getSiteConfig } from "@/lib/kontent";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import DraftModeBanner from "@/components/ui/DraftModeBanner";
+import SmartLinkProvider from "@/components/ui/SmartLinkProvider";
 import type { NavigationItem, Footer as FooterModel } from "@/lib/models";
 import "./globals.css";
 
@@ -47,6 +48,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} antialiased min-h-screen flex flex-col`}
       >
         {draft.isEnabled && <DraftModeBanner />}
+        {draft.isEnabled && <SmartLinkProvider />}
         <Header siteName={siteName} logoUrl={logoUrl} items={navItems} />
         <div className="flex-1">{children}</div>
         <Footer footer={footer} siteName={siteName} />

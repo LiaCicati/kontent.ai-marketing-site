@@ -13,7 +13,10 @@ export default function HeroBlock({ data }: HeroBlockProps) {
   const bgImage = background_image.value?.[0];
 
   return (
-    <section className="relative overflow-hidden bg-secondary text-white">
+    <section
+      className="relative overflow-hidden bg-secondary text-white"
+      data-kontent-item-id={data.system.id}
+    >
       {bgImage && (
         <Image
           src={bgImage.url}
@@ -25,11 +28,17 @@ export default function HeroBlock({ data }: HeroBlockProps) {
       )}
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 md:py-32">
         <div className="max-w-3xl">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+          <h1
+            className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6"
+            data-kontent-element-codename="headline"
+          >
             {headline.value}
           </h1>
           {subheadline.value && (
-            <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl">
+            <p
+              className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl"
+              data-kontent-element-codename="subheadline"
+            >
               {subheadline.value}
             </p>
           )}
@@ -37,6 +46,7 @@ export default function HeroBlock({ data }: HeroBlockProps) {
             <Link
               href={cta_button_url.value}
               className="inline-flex items-center rounded-lg bg-primary px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-primary-dark transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              data-kontent-element-codename="cta_button_label"
             >
               {cta_button_label.value}
               <svg

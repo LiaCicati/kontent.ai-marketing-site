@@ -13,9 +13,12 @@ export default function FAQBlock({ data }: FAQBlockProps) {
   const faqItems = items.linkedItems as FAQItem[];
 
   return (
-    <section className="py-20 bg-surface">
+    <section className="py-20 bg-surface" data-kontent-item-id={data.system.id}>
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-secondary text-center mb-12">
+        <h2
+          className="text-3xl md:text-4xl font-bold text-secondary text-center mb-12"
+          data-kontent-element-codename="title"
+        >
           {title.value}
         </h2>
         <div className="space-y-4">
@@ -32,14 +35,20 @@ function AccordionItem({ item }: { item: FAQItem }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="rounded-lg border border-border bg-white overflow-hidden">
+    <div
+      className="rounded-lg border border-border bg-white overflow-hidden"
+      data-kontent-item-id={item.system.id}
+    >
       <button
         type="button"
         className="flex w-full items-center justify-between px-6 py-4 text-left"
         onClick={() => setOpen(!open)}
         aria-expanded={open}
       >
-        <span className="text-base font-medium text-secondary">
+        <span
+          className="text-base font-medium text-secondary"
+          data-kontent-element-codename="question"
+        >
           {item.elements.question.value}
         </span>
         <svg
@@ -64,7 +73,10 @@ function AccordionItem({ item }: { item: FAQItem }) {
           open ? "max-h-96 pb-4" : "max-h-0"
         }`}
       >
-        <div className="px-6 text-muted rich-text">
+        <div
+          className="px-6 text-muted rich-text"
+          data-kontent-element-codename="answer"
+        >
           <RichText content={item.elements.answer.value} />
         </div>
       </div>

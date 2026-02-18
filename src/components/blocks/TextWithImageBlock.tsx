@@ -13,7 +13,7 @@ export default function TextWithImageBlock({ data }: TextWithImageBlockProps) {
     layout.value?.[0]?.codename === "image_left";
 
   return (
-    <section className="py-20 bg-surface">
+    <section className="py-20 bg-surface" data-kontent-item-id={data.system.id}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div
           className={`flex flex-col ${
@@ -21,7 +21,7 @@ export default function TextWithImageBlock({ data }: TextWithImageBlockProps) {
           } gap-12 items-center`}
         >
           {/* Image */}
-          <div className="w-full lg:w-1/2">
+          <div className="w-full lg:w-1/2" data-kontent-element-codename="image">
             {img ? (
               <Image
                 src={img.url}
@@ -50,7 +50,7 @@ export default function TextWithImageBlock({ data }: TextWithImageBlockProps) {
           </div>
 
           {/* Content */}
-          <div className="w-full lg:w-1/2">
+          <div className="w-full lg:w-1/2" data-kontent-element-codename="content">
             <div className="rich-text">
               <RichText content={content.value} />
             </div>

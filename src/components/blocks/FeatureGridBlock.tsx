@@ -11,14 +11,19 @@ export default function FeatureGridBlock({ data }: FeatureGridBlockProps) {
   const featureCards = cards.linkedItems as FeatureCard[];
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-white" data-kontent-item-id={data.system.id}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-4">
+          <h2
+            className="text-3xl md:text-4xl font-bold text-secondary mb-4"
+            data-kontent-element-codename="title"
+          >
             {title.value}
           </h2>
           {subtitle.value && (
-            <p className="text-lg text-muted">{subtitle.value}</p>
+            <p className="text-lg text-muted" data-kontent-element-codename="subtitle">
+              {subtitle.value}
+            </p>
           )}
         </div>
 
@@ -36,7 +41,10 @@ function FeatureCardItem({ card }: { card: FeatureCard }) {
   const icon = card.elements.icon.value?.[0];
 
   return (
-    <div className="group rounded-xl border border-border p-8 hover:shadow-lg hover:border-primary/20 transition-all duration-300">
+    <div
+      className="group rounded-xl border border-border p-8 hover:shadow-lg hover:border-primary/20 transition-all duration-300"
+      data-kontent-item-id={card.system.id}
+    >
       {icon && (
         <div className="mb-5 inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10">
           <Image
@@ -65,10 +73,13 @@ function FeatureCardItem({ card }: { card: FeatureCard }) {
           </svg>
         </div>
       )}
-      <h3 className="text-xl font-semibold text-secondary mb-3">
+      <h3
+        className="text-xl font-semibold text-secondary mb-3"
+        data-kontent-element-codename="title"
+      >
         {card.elements.title.value}
       </h3>
-      <div className="text-muted">
+      <div className="text-muted" data-kontent-element-codename="description">
         <RichText content={card.elements.description.value} />
       </div>
     </div>

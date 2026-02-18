@@ -58,7 +58,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     : null;
 
   return (
-    <main>
+    <main data-kontent-item-id={post.system.id}>
       {/* Hero */}
       <section className="bg-secondary text-white py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
@@ -84,11 +84,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {date && (
             <time className="text-sm text-gray-400 block mb-3">{date}</time>
           )}
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
+          <h1
+            className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight"
+            data-kontent-element-codename="title"
+          >
             {post.elements.title.value}
           </h1>
           {post.elements.summary.value && (
-            <p className="mt-4 text-lg text-gray-300">
+            <p
+              className="mt-4 text-lg text-gray-300"
+              data-kontent-element-codename="summary"
+            >
               {post.elements.summary.value}
             </p>
           )}
@@ -111,7 +117,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       {/* Body */}
       <article className="py-16">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 rich-text">
+        <div
+          className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 rich-text"
+          data-kontent-element-codename="body"
+        >
           <RichText
             content={post.elements.body.value}
             linkedItems={post.elements.body.linkedItems}

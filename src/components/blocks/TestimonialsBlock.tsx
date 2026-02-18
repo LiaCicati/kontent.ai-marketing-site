@@ -10,9 +10,12 @@ export default function TestimonialsBlock({ data }: TestimonialsBlockProps) {
   const testimonialCards = cards.linkedItems as TestimonialCard[];
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-white" data-kontent-item-id={data.system.id}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-secondary text-center mb-16">
+        <h2
+          className="text-3xl md:text-4xl font-bold text-secondary text-center mb-16"
+          data-kontent-element-codename="title"
+        >
           {title.value}
         </h2>
 
@@ -30,7 +33,10 @@ function TestimonialCardItem({ card }: { card: TestimonialCard }) {
   const avatar = card.elements.avatar.value?.[0];
 
   return (
-    <blockquote className="rounded-xl bg-surface p-8 border border-border">
+    <blockquote
+      className="rounded-xl bg-surface p-8 border border-border"
+      data-kontent-item-id={card.system.id}
+    >
       <svg
         className="h-8 w-8 text-primary/30 mb-4"
         fill="currentColor"
@@ -39,7 +45,10 @@ function TestimonialCardItem({ card }: { card: TestimonialCard }) {
       >
         <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" />
       </svg>
-      <p className="text-lg text-secondary mb-6 italic">
+      <p
+        className="text-lg text-secondary mb-6 italic"
+        data-kontent-element-codename="quote"
+      >
         &ldquo;{card.elements.quote.value}&rdquo;
       </p>
       <footer className="flex items-center gap-4">
@@ -57,10 +66,16 @@ function TestimonialCardItem({ card }: { card: TestimonialCard }) {
           </div>
         )}
         <div>
-          <cite className="not-italic font-semibold text-secondary block">
+          <cite
+            className="not-italic font-semibold text-secondary block"
+            data-kontent-element-codename="author_name"
+          >
             {card.elements.author_name.value}
           </cite>
-          <span className="text-sm text-muted">
+          <span
+            className="text-sm text-muted"
+            data-kontent-element-codename="author_role"
+          >
             {card.elements.author_role.value}
           </span>
         </div>

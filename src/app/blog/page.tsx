@@ -62,6 +62,7 @@ export default async function BlogPage() {
                   <article
                     key={post.system.codename}
                     className="group rounded-xl border border-border overflow-hidden hover:shadow-lg transition-shadow"
+                    data-kontent-item-id={post.system.id}
                   >
                     {image ? (
                       <Image
@@ -94,13 +95,19 @@ export default async function BlogPage() {
                           {date}
                         </time>
                       )}
-                      <h2 className="text-xl font-semibold text-secondary mb-2 group-hover:text-primary transition-colors">
+                      <h2
+                        className="text-xl font-semibold text-secondary mb-2 group-hover:text-primary transition-colors"
+                        data-kontent-element-codename="title"
+                      >
                         <Link href={`/blog/${post.elements.slug.value}`}>
                           {post.elements.title.value}
                         </Link>
                       </h2>
                       {post.elements.summary.value && (
-                        <p className="text-muted line-clamp-3">
+                        <p
+                          className="text-muted line-clamp-3"
+                          data-kontent-element-codename="summary"
+                        >
                           {post.elements.summary.value}
                         </p>
                       )}
