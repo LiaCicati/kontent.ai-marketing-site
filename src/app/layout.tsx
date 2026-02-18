@@ -4,6 +4,7 @@ import { draftMode } from "next/headers";
 import { getSiteConfig } from "@/lib/kontent";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import DraftModeBanner from "@/components/ui/DraftModeBanner";
 import type { NavigationItem, Footer as FooterModel } from "@/lib/models";
 import "./globals.css";
 
@@ -45,6 +46,7 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} antialiased min-h-screen flex flex-col`}
       >
+        {draft.isEnabled && <DraftModeBanner />}
         <Header siteName={siteName} logoUrl={logoUrl} items={navItems} />
         <div className="flex-1">{children}</div>
         <Footer footer={footer} siteName={siteName} />

@@ -47,17 +47,5 @@ export default async function CatchAllPage({ params }: PageProps) {
 
   const bodyItems = page.elements.body.linkedItems ?? [];
 
-  return (
-    <>
-      {draft.isEnabled && (
-        <div className="bg-amber-500 text-white text-center text-sm py-2 px-4">
-          Draft Mode is enabled.{" "}
-          <a href="/api/disable-draft" className="underline font-medium">
-            Disable Draft Mode
-          </a>
-        </div>
-      )}
-      <ComponentResolver items={bodyItems} />
-    </>
-  );
+  return <ComponentResolver items={bodyItems} />;
 }
