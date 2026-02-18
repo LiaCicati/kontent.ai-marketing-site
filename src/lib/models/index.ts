@@ -29,6 +29,10 @@ export interface SiteConfig extends IContentItem<{
   logo: Elements.AssetsElement;
   header_navigation: Elements.LinkedItemsElement<NavigationItem>;
   footer: Elements.LinkedItemsElement<Footer>;
+  blog_heading: Elements.TextElement;
+  blog_subtitle: Elements.TextElement;
+  blog_empty_message: Elements.TextElement;
+  back_to_blog_label: Elements.TextElement;
 }> {}
 
 // ─── Component Content Types ─────────────────────────────────────────
@@ -85,6 +89,7 @@ export interface PricingCard extends IContentItem<{
   cta_label: Elements.TextElement;
   cta_url: Elements.TextElement;
   is_popular: Elements.MultipleChoiceElement;
+  popular_badge_label: Elements.TextElement;
 }> {}
 
 export interface PricingTable extends IContentItem<{
@@ -97,6 +102,15 @@ export interface ContactForm extends IContentItem<{
   heading: Elements.TextElement;
   description: Elements.RichTextElement;
   success_message: Elements.TextElement;
+  name_label: Elements.TextElement;
+  name_placeholder: Elements.TextElement;
+  email_label: Elements.TextElement;
+  email_placeholder: Elements.TextElement;
+  subject_label: Elements.TextElement;
+  subject_placeholder: Elements.TextElement;
+  message_label: Elements.TextElement;
+  message_placeholder: Elements.TextElement;
+  submit_button_label: Elements.TextElement;
 }> {}
 
 export interface LogoCloud extends IContentItem<{

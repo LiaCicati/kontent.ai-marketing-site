@@ -3,7 +3,7 @@ import { draftMode } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getBlogPost, getBlogPosts } from "@/lib/kontent";
+import { getBlogPost, getBlogPosts, getSiteConfig } from "@/lib/kontent";
 import RichText from "@/components/ui/RichText";
 
 interface BlogPostPageProps {
@@ -37,12 +37,17 @@ export const revalidate = 60;
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const resolvedParams = await params;
   const draft = await draftMode();
-  const post = await getBlogPost(resolvedParams.slug, draft.isEnabled);
+  const [post, siteConfig] = await Promise.all([
+    getBlogPost(resolvedParams.slug, draft.isEnabled),
+    getSiteConfig(draft.isEnabled),
+  ]);
 
   if (!post) {
     notFound();
   }
 
+  const backLabel =
+    siteConfig?.elements.back_to_blog_label.value || "Back to Blog";
   const image = post.elements.image.value?.[0];
   const date = post.elements.publish_date.value
     ? new Date(post.elements.publish_date.value).toLocaleDateString("en-US", {
@@ -74,7 +79,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
               />
             </svg>
-            Back to Blog
+            {backLabel}
           </Link>
           {date && (
             <time className="text-sm text-gray-400 block mb-3">{date}</time>

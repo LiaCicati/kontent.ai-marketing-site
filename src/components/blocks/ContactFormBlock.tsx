@@ -9,7 +9,20 @@ interface ContactFormBlockProps {
 }
 
 export default function ContactFormBlock({ data }: ContactFormBlockProps) {
-  const { heading, description, success_message } = data.elements;
+  const {
+    heading,
+    description,
+    success_message,
+    name_label,
+    name_placeholder,
+    email_label,
+    email_placeholder,
+    subject_label,
+    subject_placeholder,
+    message_label,
+    message_placeholder,
+    submit_button_label,
+  } = data.elements;
   const [submitted, setSubmitted] = useState(false);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -57,7 +70,7 @@ export default function ContactFormBlock({ data }: ContactFormBlockProps) {
                   htmlFor="name"
                   className="block text-sm font-medium text-secondary mb-1"
                 >
-                  Name
+                  {name_label.value}
                 </label>
                 <input
                   type="text"
@@ -65,7 +78,7 @@ export default function ContactFormBlock({ data }: ContactFormBlockProps) {
                   name="name"
                   required
                   className="w-full rounded-lg border border-border px-4 py-2.5 text-secondary placeholder-muted-light focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                  placeholder="Your name"
+                  placeholder={name_placeholder.value}
                 />
               </div>
               <div>
@@ -73,7 +86,7 @@ export default function ContactFormBlock({ data }: ContactFormBlockProps) {
                   htmlFor="email"
                   className="block text-sm font-medium text-secondary mb-1"
                 >
-                  Email
+                  {email_label.value}
                 </label>
                 <input
                   type="email"
@@ -81,7 +94,7 @@ export default function ContactFormBlock({ data }: ContactFormBlockProps) {
                   name="email"
                   required
                   className="w-full rounded-lg border border-border px-4 py-2.5 text-secondary placeholder-muted-light focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                  placeholder="you@example.com"
+                  placeholder={email_placeholder.value}
                 />
               </div>
             </div>
@@ -90,7 +103,7 @@ export default function ContactFormBlock({ data }: ContactFormBlockProps) {
                 htmlFor="subject"
                 className="block text-sm font-medium text-secondary mb-1"
               >
-                Subject
+                {subject_label.value}
               </label>
               <input
                 type="text"
@@ -98,7 +111,7 @@ export default function ContactFormBlock({ data }: ContactFormBlockProps) {
                 name="subject"
                 required
                 className="w-full rounded-lg border border-border px-4 py-2.5 text-secondary placeholder-muted-light focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                placeholder="How can we help?"
+                placeholder={subject_placeholder.value}
               />
             </div>
             <div>
@@ -106,7 +119,7 @@ export default function ContactFormBlock({ data }: ContactFormBlockProps) {
                 htmlFor="message"
                 className="block text-sm font-medium text-secondary mb-1"
               >
-                Message
+                {message_label.value}
               </label>
               <textarea
                 id="message"
@@ -114,14 +127,14 @@ export default function ContactFormBlock({ data }: ContactFormBlockProps) {
                 rows={5}
                 required
                 className="w-full rounded-lg border border-border px-4 py-2.5 text-secondary placeholder-muted-light focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-y"
-                placeholder="Tell us about your project..."
+                placeholder={message_placeholder.value}
               />
             </div>
             <button
               type="submit"
               className="w-full sm:w-auto rounded-lg bg-primary px-8 py-3 text-base font-semibold text-white shadow-sm hover:bg-primary-dark transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
-              Send Message
+              {submit_button_label.value}
             </button>
           </form>
         )}

@@ -12,13 +12,17 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "Acme Inc.",
-    template: "%s | Acme Inc.",
-  },
-  description: "Build something amazing with Acme Inc.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const siteConfig = await getSiteConfig();
+  const siteName = siteConfig?.elements.site_name.value || "Acme Inc.";
+  return {
+    title: {
+      default: siteName,
+      template: `%s | ${siteName}`,
+    },
+    description: `Build something amazing with ${siteName}.`,
+  };
+}
 
 export default async function RootLayout({
   children,

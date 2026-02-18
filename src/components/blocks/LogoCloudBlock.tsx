@@ -17,31 +17,18 @@ export default function LogoCloudBlock({ data }: LogoCloudBlockProps) {
             {title.value}
           </p>
         )}
-        {logoAssets.length > 0 ? (
+        {logoAssets.length > 0 && (
           <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
             {logoAssets.map((logo) => (
               <Image
                 key={logo.url}
                 src={logo.url}
-                alt={logo.description || "Partner logo"}
+                alt={logo.description || title.value || ""}
                 width={120}
                 height={48}
                 className="h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
               />
             ))}
-          </div>
-        ) : (
-          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
-            {["Acme Corp", "GlobalTech", "InnovateCo", "DataFlow", "CloudBase"].map(
-              (name) => (
-                <div
-                  key={name}
-                  className="h-10 px-6 flex items-center rounded bg-border/50 text-muted text-sm font-medium"
-                >
-                  {name}
-                </div>
-              )
-            )}
           </div>
         )}
       </div>

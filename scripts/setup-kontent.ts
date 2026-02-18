@@ -355,6 +355,7 @@ async function main() {
           { name: "No", codename: "no" },
         ],
       },
+      { name: "Popular Badge Label", codename: "popular_badge_label", type: "text" },
     ],
     true
   );
@@ -478,6 +479,15 @@ async function main() {
     { name: "Heading", codename: "heading", type: "text", is_required: true },
     { name: "Description", codename: "description", type: "rich_text" },
     { name: "Success Message", codename: "success_message", type: "text" },
+    { name: "Name Label", codename: "name_label", type: "text" },
+    { name: "Name Placeholder", codename: "name_placeholder", type: "text" },
+    { name: "Email Label", codename: "email_label", type: "text" },
+    { name: "Email Placeholder", codename: "email_placeholder", type: "text" },
+    { name: "Subject Label", codename: "subject_label", type: "text" },
+    { name: "Subject Placeholder", codename: "subject_placeholder", type: "text" },
+    { name: "Message Label", codename: "message_label", type: "text" },
+    { name: "Message Placeholder", codename: "message_placeholder", type: "text" },
+    { name: "Submit Button Label", codename: "submit_button_label", type: "text" },
   ]);
 
   // 16. logo_cloud
@@ -523,6 +533,10 @@ async function main() {
       type: "modular_content",
       allowed_content_types: [{ codename: "footer" }],
     },
+    { name: "Blog Heading", codename: "blog_heading", type: "text" },
+    { name: "Blog Subtitle", codename: "blog_subtitle", type: "text" },
+    { name: "Blog Empty Message", codename: "blog_empty_message", type: "text" },
+    { name: "Back to Blog Label", codename: "back_to_blog_label", type: "text" },
   ]);
 
   // 20. page
@@ -689,6 +703,10 @@ async function main() {
       "nav_blog",
     ]),
     linkedItems("footer", ["site_footer"]),
+    text("blog_heading", "Blog"),
+    text("blog_subtitle", "Insights, tutorials, and updates from our team."),
+    text("blog_empty_message", "No blog posts yet. Check back soon!"),
+    text("back_to_blog_label", "Back to Blog"),
   ]);
 
   // ─── Home page content ───────────────────────────────────────────
@@ -851,6 +869,7 @@ async function main() {
     text("cta_label", "Get Started"),
     text("cta_url", "/contact"),
     multiChoice("is_popular", ["yes"]),
+    text("popular_badge_label", "Most Popular"),
   ]);
   await upsertVariant("pricing_enterprise", [
     text("plan_name", "Enterprise"),
@@ -996,6 +1015,15 @@ async function main() {
       "<p>Fill out the form below and we'll get back to you within 24 hours.</p>"
     ),
     text("success_message", "Thank you! We'll be in touch soon."),
+    text("name_label", "Name"),
+    text("name_placeholder", "Your name"),
+    text("email_label", "Email"),
+    text("email_placeholder", "you@example.com"),
+    text("subject_label", "Subject"),
+    text("subject_placeholder", "How can we help?"),
+    text("message_label", "Message"),
+    text("message_placeholder", "Tell us about your project..."),
+    text("submit_button_label", "Send Message"),
   ]);
 
   await upsertVariant("faq_response", [

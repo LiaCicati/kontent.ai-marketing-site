@@ -2,18 +2,28 @@ import { draftMode } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getBlogPosts } from "@/lib/kontent";
+import { getBlogPosts, getSiteConfig } from "@/lib/kontent";
 
-export const metadata: Metadata = {
-  title: "Blog",
-  description: "Latest articles and insights from Acme Inc.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const siteConfig = await getSiteConfig();
+  return {
+    title: siteConfig?.elements.blog_heading.value || "Blog",
+    description: siteConfig?.elements.blog_subtitle.value || "",
+  };
+}
 
 export const revalidate = 60;
 
 export default async function BlogPage() {
   const draft = await draftMode();
-  const posts = await getBlogPosts(draft.isEnabled);
+  const [posts, siteConfig] = await Promise.all([
+    getBlogPosts(draft.isEnabled),
+    getSiteConfig(draft.isEnabled),
+  ]);
+
+  const heading = siteConfig?.elements.blog_heading.value || "Blog";
+  const subtitle = siteConfig?.elements.blog_subtitle.value || "";
+  const emptyMessage = siteConfig?.elements.blog_empty_message.value || "";
 
   return (
     <main>
@@ -21,11 +31,11 @@ export default async function BlogPage() {
       <section className="bg-secondary text-white py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-            Blog
+            {heading}
           </h1>
-          <p className="text-lg text-gray-300 max-w-2xl">
-            Insights, tutorials, and updates from our team.
-          </p>
+          {subtitle && (
+            <p className="text-lg text-gray-300 max-w-2xl">{subtitle}</p>
+          )}
         </div>
       </section>
 
@@ -33,18 +43,19 @@ export default async function BlogPage() {
       <section className="py-20 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {posts.length === 0 ? (
-            <p className="text-center text-muted text-lg">
-              No blog posts yet. Check back soon!
-            </p>
+            <p className="text-center text-muted text-lg">{emptyMessage}</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {posts.map((post) => {
                 const image = post.elements.image.value?.[0];
                 const date = post.elements.publish_date.value
-                  ? new Date(post.elements.publish_date.value).toLocaleDateString(
-                      "en-US",
-                      { year: "numeric", month: "long", day: "numeric" }
-                    )
+                  ? new Date(
+                      post.elements.publish_date.value
+                    ).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
                   : null;
 
                 return (

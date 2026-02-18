@@ -43,9 +43,9 @@ function PricingCardItem({ card }: { card: PricingCard }) {
           : "bg-white border border-border"
       }`}
     >
-      {isPopular && (
+      {isPopular && card.elements.popular_badge_label.value && (
         <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-accent px-4 py-1 text-sm font-semibold text-secondary">
-          Most Popular
+          {card.elements.popular_badge_label.value}
         </div>
       )}
 
